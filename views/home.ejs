@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+        @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+        body {
+            font-family: "Comfortaa", cursive; 
+        }
+    </style>
+
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsapp</title>
+</head>
+<body>
+    <h2>Leia o QR CODE</h2>
+    <p>Em caso de QRCode inválido, por favor atualize sua página</p>
+    <p></p>
+    <img id="img1" width="258" height="258" alt="QR Code">
+    <br><br>
+    
+    <script>
+
+        const socket = io('http://localhost:9009')
+        socket.on('message', (data) => {
+            document.querySelector('h1').innerHTML = data
+            socket.emit('message');
+            if(data = 'CONNECTED'){
+                document.querySelector('h2').style.display = 'none';
+                document.querySelector('p').style.display = 'none';
+                // document.querySelector('img');
+
+                socket.disconnect(true);
+            }
+            else {
+
+            }
+        });
+
+        socket.on('ready', (data) => {
+            document.getElementById("img1").src = data
+            console.log(data);
+        });
+
+        socket.emit('message');
+        socket.emit('ready');
+
+    </script>
+</body>
+</html>
